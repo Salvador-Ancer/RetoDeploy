@@ -36,7 +36,7 @@ public class LoginController : MonoBehaviour
 
 
     IEnumerator VerificarUsuario (string usr, string contra) {
-        string JSONurl = "https://192.168.1.78:7128/Oxxo/VerificarUsuario/" + usr + "/" + contra;
+        string JSONurl = "https://10.22.181.29:7258/Oxxo/VerificarUsuario/" + usr + "/" + contra;
         UnityWebRequest web = UnityWebRequest.Get(JSONurl);
         web.certificateHandler = new ForceAcceptAll();
         yield return web.SendWebRequest ();
@@ -52,7 +52,7 @@ public class LoginController : MonoBehaviour
     }
 
     IEnumerator GetUserInfo (string userName) {
-        string JSONurl = "https://192.168.1.78:7128/Oxxo/GetUsuario/" + userName;
+        string JSONurl = "https://10.22.181.29:7258/Oxxo/GetUsuario/" + userName;
         UnityWebRequest web = UnityWebRequest.Get(JSONurl);
         web.certificateHandler = new ForceAcceptAll();
         yield return web.SendWebRequest ();
@@ -71,7 +71,7 @@ public class LoginController : MonoBehaviour
         if(existe) {
             PlayerPrefs.SetString("userName", usr);
             StartCoroutine(GetUserInfo(usr));
-            SceneManager.LoadScene("MenuScene");
+            SceneManager.LoadScene("Reporte");
         }
         else {
             error.text = "Usuario o contraseña incorrectos";
