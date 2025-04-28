@@ -36,47 +36,48 @@ public class LoginController : MonoBehaviour
 
 
     IEnumerator VerificarUsuario (string usr, string contra) {
-        string JSONurl = "https://10.22.181.29:7258/Oxxo/VerificarUsuario/" + usr + "/" + contra;
+        string JSONurl = "https://10.22.158.116:7258/Oxxo/VerificarUsuario/" + usr + "/" + contra;
         UnityWebRequest web = UnityWebRequest.Get(JSONurl);
         web.certificateHandler = new ForceAcceptAll();
         yield return web.SendWebRequest ();
 
         if (web.result != UnityWebRequest.Result.Success) {
             UnityEngine.Debug.Log("Error API: " + web.error);
+            error.text = "Error de conexión. Por favor intente más tarde.";
         }
         else {
             bool sesionCorrecta = false;
             sesionCorrecta = JsonConvert.DeserializeObject<bool>(web.downloadHandler.text);
-            VerificarSesion(sesionCorrecta, usr);
+            if (sesionCorrecta) {
+                // Get user info immediately after successful login
+                yield return StartCoroutine(GetUserInfo(usr));
+            } else {
+                error.text = "Usuario o contraseña incorrectos";
+                userField.text = "";
+                passwordField.text = "";
+            }
         }
     }
 
     IEnumerator GetUserInfo (string userName) {
-        string JSONurl = "https://10.22.181.29:7258/Oxxo/GetUsuario/" + userName;
+        string JSONurl = "https://10.22.158.116:7258/Oxxo/GetUsuario/" + userName;
         UnityWebRequest web = UnityWebRequest.Get(JSONurl);
         web.certificateHandler = new ForceAcceptAll();
         yield return web.SendWebRequest ();
 
         if (web.result != UnityWebRequest.Result.Success) {
             UnityEngine.Debug.Log("Error API: " + web.error);
+            error.text = "Error al obtener información del usuario";
         }
         else {
-            Usuario usuario = new Usuario();
-            usuario = JsonConvert.DeserializeObject<Usuario>(web.downloadHandler.text);
-            definirUsuario(usuario);
-        }
-    }
-
-    public void VerificarSesion(bool existe, string usr) {
-        if(existe) {
-            PlayerPrefs.SetString("userName", usr);
-            StartCoroutine(GetUserInfo(usr));
-            SceneManager.LoadScene("Reporte");
-        }
-        else {
-            error.text = "Usuario o contraseña incorrectos";
-            userField.text = "";
-            passwordField.text = "";
+            Usuario usuario = JsonConvert.DeserializeObject<Usuario>(web.downloadHandler.text);
+            if (usuario != null && usuario.id_usuario > 0) {
+                definirUsuario(usuario);
+                PlayerPrefs.SetString("userName", userName);
+                SceneManager.LoadScene("Reporte");
+            } else {
+                error.text = "Error: Usuario no encontrado";
+            }
         }
     }
 
@@ -84,5 +85,6 @@ public class LoginController : MonoBehaviour
         PlayerPrefs.SetInt("usuario_id", usr1.id_usuario);
         PlayerPrefs.SetInt("gameCoins", usr1.monedas);
         PlayerPrefs.SetInt("nivel", usr1.nivel);
+        PlayerPrefs.Save();
     }
 }
