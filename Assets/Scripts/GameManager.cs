@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public Dropdown tiendaDropdown;
     public InputField descripcionInput;
 
-    private string apiUrl = "https://192.168.68.106:7258/api/NotasIrregularidades"; // Cambia IP si es necesario
+    private string apiUrl = "https://10.22.158.116:7258/api/NotasIrregularidades"; // Cambia IP si es necesario
 
 
     public void Start()
