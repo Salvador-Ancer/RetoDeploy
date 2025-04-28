@@ -1556,9 +1556,21 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
       - m_Target: {fileID: 606927115}
         m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
         m_MethodName: CambiarAEscenaReporte
+=======
+      - m_Target: {fileID: 1283353572}
+        m_TargetAssemblyTypeName: LoginController, Assembly-CSharp
+        m_MethodName: Submit
+>>>>>>> Stashed changes
+=======
+      - m_Target: {fileID: 1283353572}
+        m_TargetAssemblyTypeName: LoginController, Assembly-CSharp
+        m_MethodName: Submit
+>>>>>>> Stashed changes
 =======
       - m_Target: {fileID: 1283353572}
         m_TargetAssemblyTypeName: LoginController, Assembly-CSharp
@@ -2037,8 +2049,16 @@ SceneRoots:
   - {fileID: 582950521}
   - {fileID: 329738591}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
   - {fileID: 606927116}
   - {fileID: 847074057}
+=======
+  - {fileID: 1283353573}
+>>>>>>> Stashed changes
+=======
+  - {fileID: 1283353573}
+>>>>>>> Stashed changes
 =======
   - {fileID: 1283353573}
 >>>>>>> Stashed changes

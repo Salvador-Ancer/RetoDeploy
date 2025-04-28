@@ -171,6 +171,8 @@ MonoBehaviour:
   InternalDynamicOS: 0
   m_GlyphTable:
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
   - m_Index: 4
     m_Metrics:
       m_Width: 0
@@ -198,6 +200,10 @@ MonoBehaviour:
       m_Y: 10
       m_Width: 15
 =======
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
   - m_Index: 399
     m_Metrics:
       m_Width: 55.546875
@@ -209,11 +215,19 @@ MonoBehaviour:
       m_X: 10
       m_Y: 10
       m_Width: 57
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
       m_Height: 15
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   - m_Index: 41
     m_Metrics:
@@ -230,6 +244,10 @@ MonoBehaviour:
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
   - m_Index: 67
@@ -340,6 +358,8 @@ MonoBehaviour:
   m_CharacterTable:
   - m_ElementType: 1
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     m_Unicode: 32
     m_GlyphIndex: 4
     m_Scale: 1
@@ -354,6 +374,14 @@ MonoBehaviour:
     m_Unicode: 8230
     m_GlyphIndex: 399
 >>>>>>> Stashed changes
+=======
+    m_Unicode: 8230
+    m_GlyphIndex: 399
+>>>>>>> Stashed changes
+=======
+    m_Unicode: 8230
+    m_GlyphIndex: 399
+>>>>>>> Stashed changes
     m_Scale: 1
   - m_ElementType: 1
     m_Unicode: 95
@@ -363,6 +391,7 @@ MonoBehaviour:
     m_Unicode: 101
     m_GlyphIndex: 73
     m_Scale: 1
+<<<<<<< Updated upstream
   - m_ElementType: 1
     m_Unicode: 110
     m_GlyphIndex: 82
@@ -383,6 +412,11 @@ MonoBehaviour:
     m_Unicode: 8203
     m_GlyphIndex: 382
     m_Scale: 1
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
   m_AtlasTextures:
   - {fileID: 28204114720316640}
   m_AtlasTextureIndex: 0
