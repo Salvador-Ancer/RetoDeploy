@@ -862,11 +862,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: d7b65e2e-c61e-475b-b43f-846387a55e53
+  cloudProjectId: f85be753-6f74-40ec-b804-b21dca971aa4
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: RetoDeploy
-  organizationId: salvador_ancer
+  projectName: OxxoGO
+  organizationId: santiparedes2004
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

@@ -18,8 +18,14 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
+        // Cargar datos iniciales
+     string tiendaInicial = tiendaDropdown.options[tiendaDropdown.value].text;
+        string tipoInicial = tipoIrregularidadDropdown.options[tipoIrregularidadDropdown.value].text;
+        StartCoroutine(GetNotaDeTienda(tiendaInicial, tipoInicial));   
+
+        // Agregar listeners para cambios en los dropdowns
         tiendaDropdown.onValueChanged.AddListener(delegate { OnDropdownChange(); });
-        tipoIrregularidadDropdown.onValueChanged.AddListener(delegate { OnDropdownChange(); }); // Escuchar ambos dropdowns
+        tipoIrregularidadDropdown.onValueChanged.AddListener(delegate { OnDropdownChange(); });
     }
 
     void OnDropdownChange()

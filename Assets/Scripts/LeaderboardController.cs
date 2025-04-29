@@ -93,7 +93,7 @@ public class LeaderboardController : MonoBehaviour
     }
 
     IEnumerator GetRanking(){
-    string JSONurl = "https://10.22.158.150:7258/LeaderBoard/GetRanking"; 
+    string JSONurl = "https://10.22.158.116:7258/LeaderBoard/GetRanking"; 
 
     UnityWebRequest web = UnityWebRequest.Get(JSONurl);
     web.certificateHandler = new ForceAcceptAll(); // Solo si tienes HTTPS autofirmado
@@ -113,15 +113,30 @@ public class LeaderboardController : MonoBehaviour
     public void fillUI()
 {
     int count = Mathf.Min(rankingUsuarios.Count, 10); 
+    int currentUserId = PlayerPrefs.GetInt("usuario_id", -1);
 
     for (int i = 0; i < count; i++)
     {
         SetUsername(rankingUsuarios[i].nombre_usuario, listaUsersText[i]);
         StartCoroutine(LoadImage(rankingUsuarios[i].imagen, pfpList[i]));
+        
+        // Highlight the current user if they are in the top 10
+        if (rankingUsuarios[i].id_usuario == currentUserId)
+        {
+            HighlightUserEntry(listaUsersText[i], pfpList[i]);
+        }
     }
 }
 
-
+    private void HighlightUserEntry(Text usernameText, Image pfpImage)
+    {
+        // Change text color to highlight
+        Color highlightColor = new Color(1f, 0.19f, 0.19f, 1f); // #FF3131
+        usernameText.color = highlightColor;
+        
+        // Make text bigger
+        usernameText.fontSize = (int)(usernameText.fontSize * 1.2f); // Increase size by 20%
+    }
 
     IEnumerator LoadImage(string imageUrl, Image targetImage)
     {
