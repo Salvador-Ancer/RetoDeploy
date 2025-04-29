@@ -10,6 +10,7 @@ using System.Text;
 public class GameManager : MonoBehaviour
 {
     public Dropdown tiendaDropdown;
+    public Dropdown tipoIrregularidadDropdown;
     public InputField descripcionInput;
 
     private string apiUrl = "https://10.22.158.116:7258/api/NotasIrregularidades"; // Cambia IP si es necesario
@@ -18,17 +19,19 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         tiendaDropdown.onValueChanged.AddListener(delegate { OnDropdownChange(); });
+        tipoIrregularidadDropdown.onValueChanged.AddListener(delegate { OnDropdownChange(); }); // Escuchar ambos dropdowns
     }
 
     void OnDropdownChange()
     {
         string tiendaSeleccionada = tiendaDropdown.options[tiendaDropdown.value].text;
-        StartCoroutine(GetNotaDeTienda(tiendaSeleccionada));
+        string tipoSeleccionado = tipoIrregularidadDropdown.options[tipoIrregularidadDropdown.value].text;
+        StartCoroutine(GetNotaDeTienda(tiendaSeleccionada, tipoSeleccionado));
     }
 
-    IEnumerator GetNotaDeTienda(string tienda)
+    IEnumerator GetNotaDeTienda(string tienda, string tipoIrregularidad)
     {
-        string getUrl = apiUrl + "?tienda=" + UnityWebRequest.EscapeURL(tienda);
+        string getUrl = apiUrl + "?tienda=" + UnityWebRequest.EscapeURL(tienda) + "&tipoIrregularidad=" + UnityWebRequest.EscapeURL(tipoIrregularidad);
 
         UnityWebRequest web = UnityWebRequest.Get(getUrl);
         web.certificateHandler = new ForceAcceptAll();
@@ -40,68 +43,76 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Nota obtenida: " + web.downloadHandler.text);
+            Debug.Log("Notas obtenidas: " + web.downloadHandler.text);
 
             List<NotaIrregularidad> notas = JsonConvert.DeserializeObject<List<NotaIrregularidad>>(web.downloadHandler.text);
 
             if (notas != null && notas.Count > 0)
             {
-                // Si hay varias, podrías decidir cuál mostrar:
-                // Por ahora vamos a mostrar la más reciente (última de la lista)
+                // Mostrar la más reciente
                 NotaIrregularidad ultimaNota = notas[notas.Count - 1];
                 descripcionInput.text = ultimaNota.descripcion;
             }
             else
             {
-                descripcionInput.text = "No hay notas registradas para esta tienda.";
+                descripcionInput.text = "No hay notas registradas, empieze anotando una nueva";
             }
         }
     }
 
-  [System.Serializable]
-public class NotaIrregularidad
-{
-    public int idNotas;
-    public string tienda;
-    public string descripcion;
-    public string fecha;
-}
+    [System.Serializable]
+    public class NotaIrregularidad
+    {
+        public int idNotas;
+        public string tienda;
+        public string descripcion;
+        public string fecha;
+        public string tipoIrregularidad;
+    }
 
     public void Enviar()
     {
         StartCoroutine(EnviarIrregularidad());
     }
 
-    IEnumerator EnviarIrregularidad()
-    {
-        string tiendaSeleccionada = tiendaDropdown.options[tiendaDropdown.value].text;
-        string descripcion = descripcionInput.text;
 
-        // Crear un objeto
-        var irregularidad = new
+        IEnumerator EnviarIrregularidad()
         {
-            tienda = tiendaSeleccionada,
-            descripcion = descripcion
-        };
+            string tiendaSeleccionada = tiendaDropdown.options[tiendaDropdown.value].text;
+            string tipoIrregularidad = tipoIrregularidadDropdown.options[tipoIrregularidadDropdown.value].text;
+            string descripcion = descripcionInput.text;
+            int idUsuario = PlayerPrefs.GetInt("usuario_id");
+            Debug.Log("idUsuario: " + idUsuario);
 
-        string jsonData = JsonConvert.SerializeObject(irregularidad);
-        byte[] jsonToSend = Encoding.UTF8.GetBytes(jsonData);
+            var irregularidad = new
+            {
+                Tienda = tiendaSeleccionada,
+                Descripcion = descripcion,
+                TipoIrregularidad = tipoIrregularidad,
+                IdUsuario = idUsuario
+            };
 
-        UnityWebRequest web = new UnityWebRequest(apiUrl, "POST");
-        web.uploadHandler = new UploadHandlerRaw(jsonToSend);
-        web.downloadHandler = new DownloadHandlerBuffer();
-        web.SetRequestHeader("Content-Type", "application/json");
-        web.certificateHandler = new ForceAcceptAll(); // Aquí el bypass SSL
+            string jsonData = JsonConvert.SerializeObject(irregularidad);
+            byte[] jsonToSend = Encoding.UTF8.GetBytes(jsonData);
 
-        yield return web.SendWebRequest();
+            UnityWebRequest web = new UnityWebRequest(apiUrl, "POST");
+            web.uploadHandler = new UploadHandlerRaw(jsonToSend);
+            web.downloadHandler = new DownloadHandlerBuffer();
+            web.SetRequestHeader("Content-Type", "application/json");
+            web.certificateHandler = new ForceAcceptAll(); // Solo para bypass SSL en pruebas
 
-        if (web.result != UnityWebRequest.Result.Success)
-        {
-            Debug.LogError("Error al enviar: " + web.error);
+            yield return web.SendWebRequest();
+
+            if (web.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Error al enviar: " + web.error);
+                Debug.LogError("Respuesta completa: " + web.downloadHandler.text);
+            }
+            else
+            {
+                Debug.Log("Reporte enviado exitosamente");
+                Debug.Log("Respuesta completa: " + web.downloadHandler.text);
+            }
         }
-        else
-        {
-            Debug.Log("Reporte enviado exitosamente");
-        }
-    }
+    
 }
