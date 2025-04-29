@@ -39,7 +39,6 @@ public class LeaderboardController : MonoBehaviour
     List<UsuarioLB> rankingUsuarios = new List<UsuarioLB>();
 
 
-    UsuarioLB prueba1 = new UsuarioLB{id_usuario = 1, imagen = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVocB3R5SeqZMfaVGZMWkc8fwqkv-fXFRPIg&s", nombre_usuario = "aleVillareal"};
 
 
     public void Awake(){
@@ -90,18 +89,26 @@ public class LeaderboardController : MonoBehaviour
     }
 
     public void fillUserList(){
-        rankingUsuarios.Add(prueba1);
-        rankingUsuarios.Add(prueba1);
-        rankingUsuarios.Add(prueba1);
-        rankingUsuarios.Add(prueba1);
-        rankingUsuarios.Add(prueba1);
-        rankingUsuarios.Add(prueba1);
-        rankingUsuarios.Add(prueba1);
-        rankingUsuarios.Add(prueba1);
-        rankingUsuarios.Add(prueba1);
-        rankingUsuarios.Add(prueba1);
-
+        StartCoroutine(GetRanking());
     }
+
+    IEnumerator GetRanking(){
+    string JSONurl = "https://10.22.158.150:7258/LeaderBoard/GetRanking"; 
+
+    UnityWebRequest web = UnityWebRequest.Get(JSONurl);
+    web.certificateHandler = new ForceAcceptAll(); // Solo si tienes HTTPS autofirmado
+    yield return web.SendWebRequest();
+
+    if (web.result != UnityWebRequest.Result.Success)
+    {
+        Debug.LogError("Error API: " + web.error);
+    }
+    else
+    {
+        rankingUsuarios = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UsuarioLB>>(web.downloadHandler.text);
+        fillUI();
+    }
+}
 
     public void fillUI()
 {
